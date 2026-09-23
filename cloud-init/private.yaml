@@ -1,0 +1,13 @@
+#cloud-config
+write_files:
+  - path: /etc/ssh/sshd_config.d/99-private-server-hardening.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      X11Forwarding no
+      MaxAuthTries 3
+runcmd:
+  - [systemctl, restart, ssh]
+

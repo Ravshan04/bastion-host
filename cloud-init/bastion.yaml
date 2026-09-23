@@ -1,0 +1,26 @@
+#cloud-config
+package_update: true
+packages:
+  - fail2ban
+write_files:
+  - path: /etc/ssh/sshd_config.d/99-bastion-hardening.conf
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin no
+      AllowAgentForwarding no
+      X11Forwarding no
+      MaxAuthTries 3
+  - path: /etc/fail2ban/jail.d/sshd.local
+    permissions: "0644"
+    content: |
+      [sshd]
+      enabled = true
+      maxretry = 5
+      findtime = 10m
+      bantime = 1h
+runcmd:
+  - [systemctl, restart, ssh]
+  - [systemctl, enable, --now, fail2ban]
+

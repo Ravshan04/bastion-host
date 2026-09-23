@@ -1,0 +1,13 @@
+Host bastion
+  HostName ${bastion_ip}
+  User ubuntu
+  IdentityFile ~/.ssh/roadmap-ec2-key.pem
+  IdentitiesOnly yes
+
+Host private-server
+  HostName ${private_ip}
+  User ubuntu
+  IdentityFile ~/.ssh/roadmap-ec2-key.pem
+  IdentitiesOnly yes
+  ProxyJump bastion
+
